@@ -1,0 +1,25 @@
+# PostgreSQL database configuration for OpsPilot.
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV.fetch("OPSPILOT_DB_HOST", "192.168.100.4") %>
+  port: <%= ENV.fetch("OPSPILOT_DB_PORT", 5432) %>
+  username: <%= ENV.fetch("OPSPILOT_DB_USERNAME", "opspilot") %>
+  password: <%= ENV.fetch("OPSPILOT_DB_PASSWORD", "") %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+
+development:
+  <<: *default
+  database: opspilot_development
+
+test:
+  <<: *default
+  database: opspilot_test
+
+production:
+  primary:
+    <<: *default
+    database: <%= ENV.fetch("OPSPILOT_DB_NAME", "opspilot_production") %>
+    username: <%= ENV.fetch("OPSPILOT_DB_USERNAME") %>
+    password: <%= ENV.fetch("OPSPILOT_DB_PASSWORD") %>
