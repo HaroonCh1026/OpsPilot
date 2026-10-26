@@ -1,0 +1,40 @@
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Node.js / Next.js
+node_modules/
+.next/
+out/
+dist/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Ruby / Rails
+.bundle/
+vendor/bundle/
+log/*
+tmp/*
+storage/*
+config/master.key
+config/credentials/*.key
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test and coverage output
+coverage/
+playwright-report/
+test-results/
