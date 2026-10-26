@@ -21,5 +21,6 @@ production:
   primary:
     <<: *default
     database: <%= ENV.fetch("OPSPILOT_DB_NAME", "opspilot_production") %>
-    username: <%= ENV.fetch("OPSPILOT_DB_USERNAME") %>
-    password: <%= ENV.fetch("OPSPILOT_DB_PASSWORD") %>
+    host: <%= ENV.fetch("OPSPILOT_DB_HOST") { raise "Set OPSPILOT_DB_HOST to the PostgreSQL server address before starting Rails in production." } %>
+    username: <%= ENV.fetch("OPSPILOT_DB_USERNAME") { raise "Set OPSPILOT_DB_USERNAME before starting Rails in production." } %>
+    password: <%= ENV.fetch("OPSPILOT_DB_PASSWORD") { raise "Set OPSPILOT_DB_PASSWORD before starting Rails in production." } %>

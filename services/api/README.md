@@ -1,24 +1,51 @@
-# README
+# OpsPilot Rails API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Prerequisites
 
-Things you may want to cover:
+- Ruby 4.0.5 (see `.ruby-version`)
+- Bundler
+- PostgreSQL 16 reachable from this machine
 
-* Ruby version
+For the two-laptop database setup and frontend/AI service commands, see the
+repository [development guide](../../README.md#local-development).
 
-* System dependencies
+## Configure and run
 
-* Configuration
+From `services\api`, create `.env` from the example if it does not already
+exist:
 
-* Database creation
+```powershell
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+```
 
-* Database initialization
+Set `OPSPILOT_DB_HOST` to the PostgreSQL server address and
+`OPSPILOT_DB_PASSWORD` to the local database password. The Rails development
+and test environments load this file with `dotenv-rails`.
 
-* How to run the test suite
+Install gems and start the API:
 
-* Services (job queues, cache servers, search engines, etc.)
+```powershell
+bundle install
+ruby .\bin\rails server -p 3001
+```
 
-* Deployment instructions
+The server listens at `http://localhost:3001`; `GET /up` is the Rails health
+check. Port 3001 avoids conflicting with the frontend's default port 3000.
 
-* ...
+## Tests
+
+With both development and test PostgreSQL databases reachable, run:
+
+```powershell
+ruby .\bin\rails test
+```
+
+For one test file, pass its path, for example:
+
+```powershell
+ruby .\bin\rails test test\controllers\health_controller_test.rb
+```
+
+Avoid `bin/setup` for routine startup: it runs `db:prepare` and clears Rails
+logs and temporary files. Do not use `db:reset` to troubleshoot connection
+problems.
