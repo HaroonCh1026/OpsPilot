@@ -22,11 +22,11 @@ venv/
 # Ruby / Rails
 .bundle/
 vendor/bundle/
-log/*
-tmp/*
-storage/*
-config/master.key
-config/credentials/*.key
+**/log/*
+**/tmp/*
+**/storage/*
+**/config/master.key
+**/config/credentials/*.key
 
 # Editors and operating systems
 .vscode/
@@ -38,3 +38,10 @@ Thumbs.db
 coverage/
 playwright-report/
 test-results/
+
+# Local database files
+*.sqlite3
+*.sqlite3-*
+*.db
+*.dump
+**/config/credentials.yml.enc

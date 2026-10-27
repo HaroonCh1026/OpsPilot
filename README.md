@@ -15,21 +15,30 @@ OpsPilot is an AI-powered knowledge and operations platform for software enginee
 
 ## Technology Stack
 
+The current foundation includes:
+
 - **Frontend:** Next.js, React, TypeScript, Tailwind CSS
-- **Backend API:** Ruby on Rails
-- **Database:** PostgreSQL with pgvector
-- **Background Jobs:** Redis and Sidekiq
+- **Backend API:** API-only Ruby on Rails 8.1
+- **Database:** PostgreSQL 16; the current schema does not yet include pgvector
 - **AI Service:** Python and FastAPI
-- **Testing:** RSpec, pytest, frontend tests, Playwright, and RAG evaluation
+- **Background adapters:** Rails Solid Queue, Solid Cache, and Solid Cable
+  dependencies/configuration are present; product jobs are not implemented.
+- **Checks:** Rails Minitest, Python pytest, and frontend ESLint/production
+  build. Frontend unit, browser, and RAG evaluation suites are not present yet.
+
+Vector search, document ingestion, retrieval-augmented generation, and
+organization-aware product behavior remain planned work. Redis and Sidekiq
+are not currently configured as application dependencies.
 
 ## Repository Structure
 
 - `apps/web` — Next.js frontend
 - `services/api` — Rails API
 - `services/ai` — Python AI service
-- `packages/contracts` — Shared API contracts
-- `infra` — Infrastructure and Docker configuration
-- `tests` — End-to-end, load, and AI evaluation tests
+- `packages` — Reserved for future shared API contracts
+- `infra` — Reserved for future infrastructure; the current PostgreSQL Compose
+  configuration is at the repository root
+- `tests` — Reserved for future end-to-end, load, and AI evaluation suites
 - `docs` — Architecture, security, and technical decisions
 
 ## Development Principles
@@ -55,6 +64,12 @@ OpsPilot is an AI-powered knowledge and operations platform for software enginee
 
 Keep local credentials in ignored `.env` files. The checked-in `.env.example`
 files contain placeholders only.
+
+Rails encrypted credentials are separate from `.env`: Rails uses
+`services/api/config/master.key` to derive `secret_key_base` during boot. That
+key is currently tracked in pushed history and must be treated as exposed;
+see the [week-one progress note](docs/progress-week-1.md). Do not use `.env`
+values as a substitute for the Rails master key.
 
 ### Two-Laptop PostgreSQL Setup
 
@@ -136,6 +151,14 @@ Run the Rails tests from the same directory:
 ruby .\bin\rails test
 ```
 
+Run the Rails CI security and style checks:
+
+```powershell
+bundle exec brakeman --no-pager
+bundle exec bundler-audit
+bundle exec rubocop -f github
+```
+
 The API is available at `http://localhost:3001`; Rails exposes its health
 check at `http://localhost:3001/up`. Port 3001 avoids conflicting with the
 frontend's default port 3000. Both the development and test databases must be
@@ -180,6 +203,20 @@ credentials are required by the current service.
 - If a service port is occupied, stop the other process or use that service's
   documented server options to choose another port.
 
+## Continuous Integration
+
+GitHub Actions runs on pushes to `main` and pull requests targeting `main`.
+Independent jobs test Rails against an isolated PostgreSQL 16 container,
+scan and lint the Rails API, run the AI service's pytest suite, and lint/build
+the frontend. Run the corresponding commands locally using the service
+instructions above; CI's test-only database credentials are not used by local
+development.
+
 ## Project Status
 
-Initial repository setup. Application services and automated tests will be added incrementally.
+The repository contains the initial frontend, Rails, and FastAPI foundations,
+plus local development instructions and a CI workflow. Identity,
+memberships, tenant-scoped APIs, document ingestion, and retrieval are not
+implemented. The expanded CI workflow has not yet been verified by a GitHub
+Actions run; see [the week-one progress note](docs/progress-week-1.md) for
+evidence and current blockers.
