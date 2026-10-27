@@ -1,4 +1,3 @@
-
 # Environment variables and secrets
 .env
 .env.*
@@ -22,11 +21,24 @@ venv/
 # Ruby / Rails
 .bundle/
 vendor/bundle/
+<<<<<<< HEAD
 **/log/*
 **/tmp/*
 **/storage/*
 **/config/master.key
 **/config/credentials/*.key
+=======
+
+# Rails logs, temporary files, and storage
+**/log/*
+**/tmp/*
+**/storage/*
+
+# Rails credentials and secret keys
+**/config/master.key
+**/config/credentials/*.key
+**/config/credentials.yml.enc
+>>>>>>> b52d82d (chore: ignore nested Rails secrets and generated files)
 
 # Editors and operating systems
 .vscode/
@@ -37,6 +49,7 @@ Thumbs.db
 # Test and coverage output
 coverage/
 playwright-report/
+<<<<<<< HEAD
 test-results/
 
 # Local database files
@@ -45,3 +58,6 @@ test-results/
 *.db
 *.dump
 **/config/credentials.yml.enc
+=======
+test-results/
+>>>>>>> b52d82d (chore: ignore nested Rails secrets and generated files)
